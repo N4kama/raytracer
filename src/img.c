@@ -46,8 +46,8 @@ unsigned int create_img(char *path, struct img *img)
         return 0;
     }
     fprintf(f, "P3\n");
-    fprintf(f, "%ld\n", img->width);
-    fprintf(f, "%ld\n", img->height);
+    fprintf(f, "%ld", img->width);
+    fprintf(f, " %ld\n", img->height);
     fprintf(f, "255\n");
     for (size_t y = 0; y < img->height; y++)
     {
