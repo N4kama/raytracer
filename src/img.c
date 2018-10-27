@@ -1,7 +1,8 @@
+#include "img.h"
+#include "vector.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "img.h"
 
 struct img *init_img(size_t w, size_t h)
 {
@@ -74,6 +75,19 @@ struct img *set_pixel(size_t x, size_t y, struct img *img, struct pixel p)
     img->pixels[y * img->width + x].g = p.g;
     img->pixels[y * img->width + x].b = p.b;
     return img;
+}
+
+vec3_t get_pixel_pos(struct camera cam, struct vec2_t coords,
+                     struct vec2_t w_h)
+{
+    vec3_t m = sum_vectors(cam.position, cam.forward); //middle of the screen
+    double factor_1 = (w_h.x / 2 - coords.y) / (w_h.x / 2);
+    double factor_2 = (coords.x - w_h.y / 2) / (w_h.y / 2);
+    vec3_t u = mul_vectors(cam.up, factor_1);
+    vec3_t r = get_normal_vector(cam.forward, cam.up);
+    r = mul_vectors(r, factor_2);
+    vec3_t res = sum_vectors(m, u);
+    return sub_vectors(res, r);
 }
 /*
 int main(void)
