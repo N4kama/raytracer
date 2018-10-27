@@ -123,7 +123,7 @@ static void dump_scene(const struct scene *s)
 #undef DUMP_ARRAY
 }
 
-static void render_scene(const struct scene *s, char* path)
+static void render_scene(struct scene *s, char* path)
 {
     struct img *img = init_img(s->width, s->height);
     foreach_pixel(img, s);

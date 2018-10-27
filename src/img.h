@@ -1,6 +1,7 @@
 #ifndef IMG_H
 #define IMG_H
 #include "struct.h"
+#include "vector.h"
 
 struct img *init_img(size_t w, size_t h);
 unsigned int create_img(char *path, struct img *img);

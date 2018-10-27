@@ -2,7 +2,7 @@
 #define COLOR_H
 
 #include "struct.h"
-#include "img.c"
+#include "img.h"
 
 struct pixel get_object_color(struct scene *s, struct hit hit);
 

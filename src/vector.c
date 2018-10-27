@@ -1,9 +1,4 @@
-#include "libparser.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "struct.h"
+#include "vector.h"
 
 double get_vector_length(vec3_t v)
 {

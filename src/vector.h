@@ -1,6 +1,13 @@
 #ifndef VECTOR_H
 # define VECTOR_H
 
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "struct.h"
+#include "libparser.h"
+
 double get_vector_length(vec3_t v);
 vec3_t normalize_vector(vec3_t vect);
 int equal_vectors(vec3_t a, vec3_t b);
