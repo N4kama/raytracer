@@ -37,7 +37,7 @@ struct ray
 
 struct hit
 {
-    struct object *obj;
+    struct object obj;
     struct triangle triangle;
     vec3_t impact_point;
 };

@@ -4,7 +4,8 @@
 #include <stdlib.h>
 
 #include "libparser.h"
-
+#include "img.h"
+#include "mesh.h"
 
 /* helper function.
  *  Used to format a vector value in a string.
@@ -122,9 +123,11 @@ static void dump_scene(const struct scene *s)
 #undef DUMP_ARRAY
 }
 
-static void dump_scene(const struct scene *s, char* path)
+static void render_scene(const struct scene *s, char* path)
 {
-    
+    struct img *img = init_img(s->width, s->height);
+    foreach_pixel(img, s);
+    create_img(path, img);
 }
 
 /* out entry point. You'll have to uncomment the render_scene call */

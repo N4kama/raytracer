@@ -46,6 +46,15 @@ double dot_vectors(vec3_t a, vec3_t b)
     return res;
 }
 
+vec3_t scale_vectors(vec3_t a, vec3_t b)
+{
+    vec3_t res;
+    res.x = a.x * b.x;
+    res.y = a.y * b.y;
+    res.z = a.z * b.z;
+    return res;
+}
+
 vec3_t cross_vectors(vec3_t a, vec3_t b)
 {
     vec3_t res;

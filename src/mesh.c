@@ -1,9 +1,11 @@
+#include "img.h"
 #include "libparser.h"
-#include "vector.c"
+#include "struct.h"
+#include "vector.h"
+#include "color.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "struct.h"
 
 #define LARGE_DOUBLE 999999999
 
@@ -18,26 +20,31 @@ void foreach_pixel(struct img *img, struct scene *s)
 {
     vec3_t def_vect = {LARGE_DOUBLE, LARGE_DOUBLE, LARGE_DOUBLE};
     struct triangle def_triangle = get_triangle(def_vect, def_vect, def_vect);
-    vec3_t *vertices = s->meshs->vtx;
-    size_t count = s->meshs->tri_count;
     for (int i = 0; i < img->height; i++)
     {
         for (int j = 0; j < img->width; j++)
         {
-            struct vec2_t coords = {j, i};
-            struct vec2_t w_h = {s->width, s->height};
-            struct ray r = get_ray(s->camera.position,
-                                   get_pixel_pos(s->camera, coords, w_h));
-            struct hit imp = nearest_intersection(vertices, count, r);
-            if (!equal_vectors(def_vect, imp.impact_point))
+            for (int m = 0; m < s->mesh_count; m++)
             {
-                //set_pixel();
+                vec3_t *vertices = s->meshs[m].vtx;
+                size_t count = s->meshs[m].tri_count;
+                struct object o = s->objects[m];
+                struct vec2_t coords = {j, i};
+                struct vec2_t w_h = {s->width, s->height};
+                struct ray r = get_ray(s->camera.position,
+                                       get_pixel_pos(s->camera, coords, w_h));
+                struct hit imp = nearest_intersection(vertices, count, r, o);
+                if (!equal_vectors(def_vect, imp.impact_point))
+                {
+                    struct pixel pixel = get_object_color(s, imp);
+                    
+                }
             }
         }
     }
 }
 
-struct hit nearest_intersection(vec3_t *vert, size_t n, struct ray r)
+struct hit nearest_intersection(vec3_t *vert, size_t n, struct ray r, struct object o)
 {
     vec3_t contact = {LARGE_DOUBLE, LARGE_DOUBLE, LARGE_DOUBLE};
     vec3_t best = contact;
@@ -45,7 +52,10 @@ struct hit nearest_intersection(vec3_t *vert, size_t n, struct ray r)
     struct triangle best_triangle = get_triangle(contact, contact, contact);
     for (int i = 0; i < n; i++)
     {
-        t = get_triangle(vert[i * 3 + 0], vert[i * 3 + 1], vert[i * 3 + 2]);
+        vec3_t a = scale_vectors(o.scale, sum_vectors(o.position, vert[i * 3 + 0]));
+        vec3_t b = scale_vectors(o.scale, sum_vectors(o.position, vert[i * 3 + 1]));
+        vec3_t c = scale_vectors(o.scale, sum_vectors(o.position, vert[i * 3 + 2]));
+        t = get_triangle(a, b, c);
         contact = hit_triangle(t, r);
         if (!equal_vectors(nearest_vect(contact, best, r.origin), contact))
         {
@@ -53,7 +63,7 @@ struct hit nearest_intersection(vec3_t *vert, size_t n, struct ray r)
             best_triangle = t;
         }
     }
-    struct hit res = {best_triangle, best};
+    struct hit res = {o, best_triangle, best};
     return res;
 }
 

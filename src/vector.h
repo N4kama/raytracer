@@ -11,5 +11,5 @@ vec3_t mul_vectors(vec3_t a, double b);
 vec3_t sub_vectors(vec3_t a, vec3_t b);
 vec3_t div_vectors(vec3_t a, double b);
 vec3_t get_normal_vector(vec3_t a, vec3_t b);
-
+vec3_t scale_vectors(vec3_t a, vec3_t b);
 #endif /* VECTOR_H */
