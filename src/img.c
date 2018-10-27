@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "img.h"
 
 struct img *init_img(size_t w, size_t h)
 {
@@ -74,7 +75,7 @@ struct img *set_pixel(size_t x, size_t y, struct img *img, struct pixel p)
     img->pixels[y * img->width + x].b = p.b;
     return img;
 }
-
+/*
 int main(void)
 {
     struct img *omg = init_img(500, 500);
@@ -86,4 +87,4 @@ int main(void)
         }
     }
     return create_img("wowowowow.ppm", omg);
-}
+}*/
