@@ -122,6 +122,11 @@ static void dump_scene(const struct scene *s)
 #undef DUMP_ARRAY
 }
 
+static void dump_scene(const struct scene *s, char* path)
+{
+    
+}
+
 /* out entry point. You'll have to uncomment the render_scene call */
 int main(int argc, char** argv)
 {
@@ -138,7 +143,7 @@ int main(int argc, char** argv)
     }
 
     // your raytracer goes here
-    //render_scene(s, argv[2]);
+    render_scene(s, argv[2]);
     dump_scene(s);
 
     /* free the scene */
