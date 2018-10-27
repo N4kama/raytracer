@@ -28,7 +28,7 @@ struct triangle get_triangle(vec3_t a, vec3_t b, vec3_t c)
 
 void print_ray_and_hit(struct ray r, struct hit imp)
 {
-    if (imp.touched)//)imp.obj.position.x || imp.obj.position.y || imp.obj.position.z)
+    if (imp.touched) //)imp.obj.position.x || imp.obj.position.y || imp.obj.position.z)
     {
         printf("\tShooting ray : Origin at (%f, %f, %f) -- Camera\n\t      Direction at (%f, %f, %f) -- ray\n",
                r.origin.x, r.origin.y, r.origin.z, r.dir.x, r.dir.y, r.dir.z);
@@ -46,19 +46,20 @@ void foreach_pixel(struct img *img, struct scene *s)
         for (unsigned j = 0; j < img->width; j++)
         {
             //printf("Starting processing pixels (%uc, %uc) of the camera\n", j, i);
-            for (unsigned m = 0; m < s->mesh_count; m++)
+            for (unsigned m = 0; m < s->object_count; m++)
             {
-                vec3_t *vertices = s->meshs[m].vtx;
-                size_t count = s->meshs[m].tri_count;
                 struct object o = s->objects[m];
+                int mesh_id = o.mesh_id;
+                vec3_t *vertices = s->meshs[mesh_id].vtx;
+                size_t count = s->meshs[mesh_id].tri_count;
                 struct vec2_t coords = {j, i};
                 struct vec2_t w_h = {s->width, s->height};
-                struct ray r = get_ray(s->camera.position,
-                                       get_pixel_pos(s->camera, coords, w_h));
+                struct ray r = get_ray(s->camera.position, get_pixel_pos(s->camera, coords, w_h));
                 struct hit imp = nearest_intersection(vertices, count, r, o);
                 //print_ray_and_hit(r, imp); //DEBUG
                 if (imp.touched)
                 {
+                    //get_lightning(s, imp);
                     struct pixel pixel = get_object_color(s, imp);
                     printf("Index : (%d, %d) with color : (%u, %u, %u)\n", j, i, pixel.r, pixel.g, pixel.b);
                     set_pixel(j, i, img, pixel);

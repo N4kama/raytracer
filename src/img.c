@@ -67,7 +67,6 @@ struct img *set_pixel(size_t x, size_t y, struct img *img, struct pixel p)
     {
         return NULL;
     }
-    printf("Hello : (%u, %u, %u) - STOP\n", p.r, p.g, p.b);
     img->pixels[y * img->width + x].r = p.r;
     img->pixels[y * img->width + x].g = p.g;
     img->pixels[y * img->width + x].b = p.b;
