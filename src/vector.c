@@ -3,12 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-struct vec2_t
-{
-    double x;
-    double y;
-};
+#include "struct.h"
 
 double get_vector_length(vec3_t v)
 {

@@ -2,20 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-struct pixel
-{
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
-};
-
-struct img
-{
-    size_t width;
-    size_t height;
-    struct pixel *pixels;
-};
-
 struct img *init_img(size_t w, size_t h)
 {
     struct img *img = malloc(sizeof(struct img)); //toFree

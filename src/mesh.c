@@ -3,43 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "struct.h"
+
 #define LARGE_DOUBLE 999999999
-
-struct triangle
-{
-    vec3_t a;
-    vec3_t b;
-    vec3_t c;
-};
-
-struct ray
-{
-    vec3_t origin;
-    vec3_t dir;
-};
-
-struct hit
-{
-    struct triangle triangle;
-    vec3_t impact_point;
-};
-
-struct ray get_ray(vec3_t o, vec3_t d)
-{
-    struct ray r;
-    r.origin = o;
-    r.dir = d;
-    return r;
-}
-
-struct triangle get_triangle(vec3_t a, vec3_t b, vec3_t c)
-{
-    struct triangle t;
-    t.a = a;
-    t.b = b;
-    t.c = c;
-    return t;
-}
 
 vec3_t nearest_vect(vec3_t a, vec3_t b, vec3_t o)
 {
