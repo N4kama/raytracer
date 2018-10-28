@@ -1,7 +1,8 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include "libparser.h"
-#include "struct.h"
+#include "mesh.h"
+
+vec3_t get_lightning(struct scene *s, struct hit hit, unsigned m);
 
 #endif /* LIGHT_H */

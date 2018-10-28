@@ -2,17 +2,17 @@
 
 struct img *init_img(size_t w, size_t h)
 {
-    struct img *img = malloc(sizeof(struct img)); //toFree
+    struct img *img = malloc(sizeof(struct img));
     if (!img)
     {
         return NULL;
     }
     img->height = h;
     img->width = w;
-    img->pixels = calloc(w * h, sizeof(struct pixel)); //toFree
+    img->pixels = calloc(w * h, sizeof(struct pixel));
     if (!img->pixels)
     {
-        free(img); //(init_img);
+        free(img);
         return NULL;
     }
     return img;
@@ -24,7 +24,7 @@ unsigned int create_img(char *path, struct img *img)
     {
         return 0;
     }
-    FILE *f = fopen(path, "w"); //to close
+    FILE *f = fopen(path, "w");
     if (!f)
     {
         return 0;
@@ -49,15 +49,16 @@ unsigned int create_img(char *path, struct img *img)
             }
         }
     }
-    fclose(f); //create_img
+    fclose(f);
     return 1;
 }
 
 struct pixel init_pixel(unsigned char r, unsigned char g, unsigned char b)
 {
     struct pixel p =
-        {
-            r, g, b};
+    {
+        r, g, b
+    };
     return p;
 }
 
@@ -74,27 +75,27 @@ struct img *set_pixel(size_t x, size_t y, struct img *img, struct pixel p)
 }
 
 vec3_t get_pixel_pos(struct camera cam, struct vec2_t coords,
-                     struct vec2_t w_h)
+                     struct vec2_t w_h, double fov)
 {
-    vec3_t m = sum_vectors(cam.position, cam.forward); //middle of the screen
-    double factor_1 = (w_h.x / 2 - coords.y) / (w_h.x / 2);
-    double factor_2 = (coords.x - w_h.y / 2) / (w_h.y / 2);
-    vec3_t u = mul_vectors(cam.up, factor_1);
-    vec3_t r = get_normal_vector(cam.forward, cam.up);
-    r = mul_vectors(r, factor_2);
-    vec3_t res = sum_vectors(m, u);
-    return sub_vectors(res, r);
-}
-/*
-int main(void)
-{
-    struct img *omg = init_img(500, 500);
-    for (unsigned int i = 0; i < 500; i++)
+    double ratio_x = w_h.x / w_h.y;
+    double ratio_y = w_h.y / w_h.x;
+    if (ratio_x > ratio_y)
     {
-        for (unsigned int j = 0; j < 500; j++)
-        {
-            set_pixel(i, j, omg, init_pixel(255, 0, 0));
-        }
+        ratio_y = -1;
     }
-    return create_img("wowowowow.ppm", omg);
-}*/
+    else
+    {
+        ratio_x = 1;
+        ratio_y *= -1;
+    }
+    double pi = 3.14159265359;
+    double px = ((coords.x / w_h.x) - 0.5) * ratio_x * tan(fov * pi / 180 / 2);
+    double py = ((coords.y / w_h.y) - 0.5) * ratio_y * tan(fov * pi / 180 / 2);
+    vec3_t m = sum_vectors(cam.position, cam.forward);
+    vec3_t u = mul_vectors(cam.up, py);
+    vec3_t r = get_normal_vector(cam.up, cam.forward);
+    r = mul_vectors(r, px);
+    vec3_t res = sum_vectors(m, u);
+    res = sum_vectors(res, r);
+    return sub_vectors(res, cam.position);
+}

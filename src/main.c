@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "libparser.h"
 #include "img.h"
+#include "libparser.h"
 #include "mesh.h"
 
 /* helper function.
@@ -15,7 +15,7 @@
  *
  *  see: https://en.wikipedia.org/wiki/Data_segment
  */
-static const char* vec2str(vec3_t vec)
+static const char *vec2str(vec3_t vec)
 {
 #define BUF_SIZE 128
     static char buffer[BUF_SIZE];
@@ -43,29 +43,32 @@ static void dump_light(const struct light *l)
 static void dump_mesh(const struct mesh *m)
 {
     printf("    tri_count: %zu\n", m->tri_count);
-    for (size_t i = 0; i < m->tri_count; i++) {
+    for (size_t i = 0; i < m->tri_count; i++)
+    {
 
         printf("\tVTX\t%s\t%s\t%s\n", vec2str(m->vtx[i * 3 + 0]),
-                                      vec2str(m->vtx[i * 3 + 1]),
-                                      vec2str(m->vtx[i * 3 + 2]));
+               vec2str(m->vtx[i * 3 + 1]),
+               vec2str(m->vtx[i * 3 + 2]));
 
-        if (m->nrm != NULL) {
+        if (m->nrm != NULL)
+        {
             printf("\tNRMs\t%s\t%s\t%s\n\n", vec2str(m->nrm[i * 3 + 0]),
-                                             vec2str(m->nrm[i * 3 + 1]),
-                                             vec2str(m->nrm[i * 3 + 2]));
+                   vec2str(m->nrm[i * 3 + 1]),
+                   vec2str(m->nrm[i * 3 + 2]));
         }
 
-        if (m->uv != NULL) {
+        if (m->uv != NULL)
+        {
             printf("\tUVs\t%s\t%s\t%s\n\n", vec2str(m->uv[i * 3 + 0]),
-                                            vec2str(m->uv[i * 3 + 1]),
-                                            vec2str(m->uv[i * 3 + 2]));
+                   vec2str(m->uv[i * 3 + 1]),
+                   vec2str(m->uv[i * 3 + 2]));
         }
     }
 }
 
 static void dump_material(const struct material *m)
 {
-#define PRINT_KEY(Var, Key)     printf("\t" #Key ":\t%.3f\n", (Var)->Key)
+#define PRINT_KEY(Var, Key) printf("\t" #Key ":\t%.3f\n", (Var)->Key)
     PRINT_KEY(m, specular_level);
     PRINT_KEY(m, shininess);
     PRINT_KEY(m, reflectivity);
@@ -87,7 +90,7 @@ static void dump_material(const struct material *m)
 
 static void dump_object(const struct object *o)
 {
-#define PRINT_KEY(Var, Key)     printf("\t" #Key ":\t%zu\n", (Var)->Key)
+#define PRINT_KEY(Var, Key) printf("\t" #Key ":\t%zu\n", (Var)->Key)
     PRINT_KEY(o, mesh_id);
     PRINT_KEY(o, mtl_id);
 #undef PRINT_KEY
@@ -102,19 +105,20 @@ static void dump_scene(const struct scene *s)
 {
     puts("scene:");
     printf("    output:      %dx%d\n", s->width, s->height);
-    printf("    mesh count:  %zu\n",   s->mesh_count);
-    printf("    light count: %zu\n",   s->light_count);
+    printf("    mesh count:  %zu\n", s->mesh_count);
+    printf("    light count: %zu\n", s->light_count);
 
     puts("camera:");
-    printf("    position:  %s\n",   vec2str(s->camera.position));
-    printf("    forward:   %s\n",   vec2str(s->camera.forward));
-    printf("    up:        %s\n",   vec2str(s->camera.up));
+    printf("    position:  %s\n", vec2str(s->camera.position));
+    printf("    forward:   %s\n", vec2str(s->camera.forward));
+    printf("    up:        %s\n", vec2str(s->camera.up));
     printf("    fov:       %.3f\n", s->camera.fov);
 
-#define DUMP_ARRAY(Scene, ItemField, CountField, Func)  \
-    for (size_t i = 0; i < (Scene)->CountField; i++) {  \
-        printf(#ItemField " %zu:\n", i);                \
-        Func((Scene)->ItemField + i);                       \
+#define DUMP_ARRAY(Scene, ItemField, CountField, Func) \
+    for (size_t i = 0; i < (Scene)->CountField; i++)   \
+    {                                                  \
+        printf(#ItemField " %zu:\n", i);               \
+        Func((Scene)->ItemField + i);                  \
     }
     DUMP_ARRAY(s, lights, light_count, dump_light);
     DUMP_ARRAY(s, meshs, mesh_count, dump_mesh);
@@ -123,24 +127,30 @@ static void dump_scene(const struct scene *s)
 #undef DUMP_ARRAY
 }
 
-static void render_scene(struct scene *s, char* path)
+static void render_scene(struct scene *s, char *path)
 {
+    s->camera.forward = normalize_vector(s->camera.forward);
+    s->camera.up = normalize_vector(s->camera.up);
     struct img *img = init_img(s->width, s->height);
     foreach_pixel(img, s);
     create_img(path, img);
+    free(img->pixels);
+    free(img);
 }
 
 /* out entry point. You'll have to uncomment the render_scene call */
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    if (argc != 3) {
+    if (argc != 3)
+    {
         warnx("usage: %s scene.json output.ppm\n", argv[0]);
         return -1;
     }
 
     /* loads the scene, then dump it */
     struct scene *s = scene_parser.load(argv[1]);
-    if (NULL == s) {
+    if (NULL == s)
+    {
         warnx("invalid scene file");
         return -1;
     }

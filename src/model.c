@@ -1,7 +1,7 @@
+#include "libparser.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "libparser.h"
 
 void sum_vectors(vec3_t *res, vec3_t *a, vec3_t *b)
 {

@@ -1,0 +1,23 @@
+TODO :
+
+Save image structure into a file : OK
+
+Camera related :
+    - Settings (position, rotation, scale) : position and scale only
+    - FOV : OK
+    - Aspect Ratio : OK
+    - Moving into the projection plane (pixel image) : OK
+    - Shooting rays : OK
+
+Object tracing :
+    - Find intersection : OK
+    - returning a struct with object, hit position and hit triangle : OK
+
+Light : (up to stage 1 included)
+    - Ambiant : OK
+    - Directional : MEH
+    - Point : KO
+
+    - Light color based on objects : OK
+
+Material : Only handling diffuse parameter
