@@ -14,24 +14,6 @@ vec3_t normalize_vector(vec3_t vect)
     return vect;
 }
 
-int equal_vectors(vec3_t a, vec3_t b)
-{
-    int res = 1;
-    res &= a.x == b.x;
-    res &= a.y == b.y;
-    res &= a.z == b.z;
-    return res;
-}
-
-vec3_t sum_vectors(vec3_t a, vec3_t b)
-{
-    vec3_t res;
-    res.x = a.x + b.x;
-    res.y = a.y + b.y;
-    res.z = a.z + b.z;
-    return res;
-}
-
 double dot_vectors(vec3_t a, vec3_t b)
 {
     double res = 0;
@@ -59,31 +41,9 @@ vec3_t cross_vectors(vec3_t a, vec3_t b)
     return res;
 }
 
-vec3_t mul_vectors(vec3_t a, double b)
+double dot_product(vec3_t a, vec3_t b)
 {
-    vec3_t res;
-    res.x = a.x * b;
-    res.y = a.y * b;
-    res.z = a.z * b;
-    return res;
-}
-
-vec3_t sub_vectors(vec3_t a, vec3_t b)
-{
-    vec3_t res;
-    res.x = a.x - b.x;
-    res.y = a.y - b.y;
-    res.z = a.z - b.z;
-    return res;
-}
-
-vec3_t div_vectors(vec3_t a, double b)
-{
-    vec3_t res;
-    res.x = a.x / b;
-    res.y = a.y / b;
-    res.z = a.z / b;
-    return res;
+    return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
 vec3_t get_normal_vector(vec3_t a, vec3_t b)
@@ -92,5 +52,5 @@ vec3_t get_normal_vector(vec3_t a, vec3_t b)
     res.x = (a.y * b.z) - (b.y * a.z);
     res.y = (a.x * b.z) - (b.x * a.z);
     res.z = (a.x * b.y) - (b.x * a.y);
-    return res;//normalize_vector(res);
+    return res;
 }
