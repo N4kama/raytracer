@@ -15,9 +15,11 @@ Object tracing :
 
 Light : (up to stage 1 included)
     - Ambiant : OK
-    - Directional : MEH
-    - Point : KO
+    - Directional : OK
+    - Point : OK
 
     - Light color based on objects : OK
 
 Material : Only handling diffuse parameter
+
+Being able to process railway, teapot and lighthouse : OK
